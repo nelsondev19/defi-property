@@ -71,7 +71,7 @@ The app will be available at `http://locahost:3000`.
 - Social sharing buttons
 
 
-## Features by Nelson
+## Features developed by Nelson
 
 - Splits imports by funcionality
 - Using Repository Pattern to handle function with Wallet
