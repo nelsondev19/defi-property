@@ -69,3 +69,14 @@ The app will be available at `http://locahost:3000`.
 - Search functionality
 - Author profiles
 - Social sharing buttons
+
+
+## Changes by Nelson
+
+- Splits imports by funcionality
+- Using Repository Pattern to handle function with Wallet
+- React Hook to listen changes from Wallet
+- UI Component to show Wallet Address
+- Navbar updated to use Wallet Address Component
+- Removed unused imports in all React app
+- Added JSDoc comments to new Hooks and components
