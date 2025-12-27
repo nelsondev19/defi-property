@@ -18,14 +18,6 @@ import { WalletService } from "../../services/walletService";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const navigation = [
-    { name: "Home", href: "/" },
-    { name: "Properties", href: "/properties" },
-    { name: "About", href: "/about" },
-    { name: "FAQ", href: "/faq" },
-    { name: "Blog", href: "/blog" },
-  ];
-
   const [Wallet, setWallet] = useState(null);
   const [Loading, setLoading] = useState(false);
   const [Error, setError] = useState(null);
@@ -192,5 +184,13 @@ function Connecting() {
     </div>
   );
 }
+
+const navigation = [
+  { name: "Home", href: "/" },
+  { name: "Properties", href: "/properties" },
+  { name: "About", href: "/about" },
+  { name: "FAQ", href: "/faq" },
+  { name: "Blog", href: "/blog" },
+];
 
 export default Navbar;
