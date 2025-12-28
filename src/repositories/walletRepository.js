@@ -14,51 +14,47 @@ class WalletRepository {
     }
   }
   async getConnectedWallet() {
-    if (!window.ethereum) {
-      throw new Error("MetaMask is not installed");
-    }
-
-    try {
-      const accounts = await window.ethereum.request({
-        method: "eth_accounts",
-      });      
-      return accounts.length > 0 ? accounts[0] : null;
-    } catch (error) {
-      throw new Error(error.message);
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        });
+        return accounts.length > 0 ? accounts[0] : null;
+      } catch (error) {
+        throw new Error(error.message);
+      }
     }
   }
 
   async switchNetwork(chainId) {
-    if (!window.ethereum) {
-      throw new Error("MetaMask is not installed");
-    }
-
-    try {
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId }],
-      });      
-      return true;
-    } catch (error) {
-      if (error.code === 4902) {
+    if (window.ethereum) {
+      try {
         await window.ethereum.request({
-          method: "wallet_addEthereumChain",
-          params: [
-            {
-              chainId: chainId,
-              chainName: "Ganache",
-              rpcUrls: ["http://127.0.0.1:7545"],
-              nativeCurrency: {
-                name: "ETH",
-                symbol: "ETH",
-                decimals: 18,
-              },
-            },
-          ],
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId }],
         });
-        console.log("Ganache network added successfully");
-      } else {
-        throw new Error(`Error switching network: ${error.message}`);
+        return true;
+      } catch (error) {
+        if (error.code === 4902) {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: chainId,
+                chainName: "Ganache",
+                rpcUrls: ["http://127.0.0.1:7545"],
+                nativeCurrency: {
+                  name: "ETH",
+                  symbol: "ETH",
+                  decimals: 18,
+                },
+              },
+            ],
+          });
+          console.log("Ganache network added successfully");
+        } else {
+          throw new Error(`Error switching network: ${error.message}`);
+        }
       }
     }
   }

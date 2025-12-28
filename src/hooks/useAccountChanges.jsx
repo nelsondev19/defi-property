@@ -28,8 +28,6 @@ export const useAccountChanges = ({ setWallet, setError }) => {
           setWallet(accounts[0]);
         }
       });
-    } else {
-      setError("MetaMask is not installed");
     }
   }, [setWallet, setError]);
 };
