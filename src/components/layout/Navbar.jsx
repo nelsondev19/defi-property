@@ -5,7 +5,6 @@ import { useAccountChanges } from "../../hooks/useAccountChanges";
 // COMPONENTS
 import { Link } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
-import { BtnConnectWallet } from "../../ui/BtnConnectWallet";
 import { BiLinkExternal } from "react-icons/bi";
 import { FaCheck } from "react-icons/fa6";
 import { WalletAddress } from "../../ui/WalletAddress";
@@ -136,17 +135,17 @@ function Navbar() {
               ) : (
                 <>
                   {Wallet ? (
-                    <WalletAddress Wallet={Wallet} />
+                    <>
+                      <WalletAddress Wallet={Wallet} />
+                      <BtnChangeNetwork
+                        onClick={async () => {
+                          await repositoryRef.current.switchNetwork("0x539"); // Hex for 1337
+                        }}
+                      />
+                    </>
                   ) : (
                     <BtnConnectWallet onClick={handleConnect} />
                   )}
-                  <button
-                    onClick={async () =>
-                      await repositoryRef.current.switchNetwork("0x539") // Hex for 1337
-                    }
-                  >
-                    CHANGE Network
-                  </button>
                 </>
               )}
             </div>
@@ -205,6 +204,22 @@ function Connecting() {
     <div className="block px-3 py-2 text-base font-medium text-sapphire-700">
       Connecting...
     </div>
+  );
+}
+
+function BtnConnectWallet({ className, onClick }) {
+  return (
+    <button className={`btn ${className}`} onClick={onClick}>
+      Connect
+    </button>
+  );
+}
+
+function BtnChangeNetwork({ onClick }) {
+  return (
+    <button className="btn" onClick={onClick}>
+      Change Network
+    </button>
   );
 }
 

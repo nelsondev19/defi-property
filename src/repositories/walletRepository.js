@@ -21,7 +21,7 @@ class WalletRepository {
     try {
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
-      });
+      });      
       return accounts.length > 0 ? accounts[0] : null;
     } catch (error) {
       throw new Error(error.message);
@@ -37,7 +37,7 @@ class WalletRepository {
       await window.ethereum.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId }],
-      });
+      });      
       return true;
     } catch (error) {
       if (error.code === 4902) {
