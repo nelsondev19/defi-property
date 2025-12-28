@@ -140,6 +140,13 @@ function Navbar() {
                   ) : (
                     <BtnConnectWallet onClick={handleConnect} />
                   )}
+                  <button
+                    onClick={async () =>
+                      await repositoryRef.current.switchNetwork("0x539") // Hex for 1337
+                    }
+                  >
+                    CHANGE Network
+                  </button>
                 </>
               )}
             </div>
