@@ -3,7 +3,7 @@ const hre = require("hardhat");
 // Function to create a home transaction (simulates receiving data from frontend)
 async function createHomeTransaction(factory, propertyData, accounts) {
   const { address, zip, city, realtorFee, price } = propertyData;
-  const { realtorAddress, sellerAddress, buyerAddress } = accounts;
+  const { sellerAddress, buyerAddress } = accounts;
 
   console.log("Creating HomeTransaction with provided data...");
   console.log("Property Address:", address);

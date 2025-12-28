@@ -13,15 +13,15 @@ module.exports = {
   },
   networks: {
     ganache: {
-      url: "http://127.0.0.1:7545",
+      url: "HTTP://0.0.0.0:7545",
       accounts: {
-        mnemonic: "model voice excite enroll salt envelope prefer twelve goose hockey life garlic",
+        mnemonic: "market garment level fluid hard enact liquid coast stone artwork palm tomato",
       },
       chainId: 1337,  // Ganache chain ID
       timeout: 60000
     },
     localhost: {
-      url: "http://127.0.0.1:7545"
+      url: "HTTP://0.0.0.0:7545"
     }
   },
   paths: {
