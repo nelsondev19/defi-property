@@ -1,49 +1,94 @@
-import { ethers } from "hardhat";
+const hre = require("hardhat");
 
-async function main() {
-  const [deployer] = await ethers.getSigners();
+// Function to create a home transaction (simulates receiving data from frontend)
+async function createHomeTransaction(factory, propertyData, accounts) {
+  const { address, zip, city, realtorFee, price } = propertyData;
+  const { realtorAddress, sellerAddress, buyerAddress } = accounts;
 
-  console.log("Deploying contract with account:", deployer.address);
-  console.log(
-    "Account balance:",
-    (await deployer.provider.getBalance(deployer.address)).toString()
-  );
+  console.log("Creating HomeTransaction with provided data...");
+  console.log("Property Address:", address);
+  console.log("ZIP:", zip);
+  console.log("City:", city);
+  console.log("Price:", hre.ethers.utils.formatEther(price), "ETH");
+  console.log("Realtor Fee:", hre.ethers.utils.formatEther(realtorFee), "ETH");
+  console.log("");
 
-  // Parámetros del contrato
-  const homeAddress = "123 Main Street";
-  const zip = "12345";
-  const city = "New York";
-  const realtorFee = ethers.parseEther("0.1"); // 0.1 ETH
-  const price = ethers.parseEther("1"); // 1 ETH
-
-  // Direcciones de ejemplo (puedes usar tus propias direcciones de MetaMask)
-  const realtor = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"; // Cambiar
-  const seller = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Cambiar
-  const buyer = "0xe18ea4685bbabbb71e8baff84362f773ad7a7c42"; // Cambiar
-
-  const HomeTransaction = await ethers.getContractFactory(
-    "HomeTransaction"
-  );
-  const homeTransaction = await HomeTransaction.deploy(
-    homeAddress,
+  const tx = await factory.create(
+    address,
     zip,
     city,
     realtorFee,
     price,
-    realtor,
-    seller,
-    buyer
+    sellerAddress,
+    buyerAddress
   );
+  
+  await tx.wait();
+  
+  // Get the created instance
+  const instanceCount = await factory.getInstanceCount();
+  const homeTransactionInstance = await factory.getInstance(instanceCount - 1);
+  
+  return {
+    transactionHash: tx.hash,
+    contractAddress: homeTransactionInstance
+  };
+}
 
-  await homeTransaction.waitForDeployment();
+async function main() {
+  console.log("Starting deployment to Ganache...\n");
 
-  const contractAddress = await homeTransaction.getAddress();
-  console.log("HomeTransaction deployed to:", contractAddress);
-  console.log("\nGuarda esta información:");
-  console.log("Contract Address:", contractAddress);
-  console.log("Realtor:", realtor);
-  console.log("Seller:", seller);
-  console.log("Buyer:", buyer);
+  // Get accounts from Ganache
+  const signers = await hre.ethers.getSigners();
+  const realtor = signers[0];
+  const seller = signers[1];
+  const buyer = signers[2];
+
+  // Deploy Factory contract
+  console.log("Deploying Factory contract...");
+  const Factory = await hre.ethers.getContractFactory("Factory");
+  const factory = await Factory.deploy();
+  await factory.deployed();
+
+  console.log("✓ Factory contract deployed to:", factory.address);
+  console.log("");
+
+  // Example data (simulates data from frontend POST request)
+  // This would normally come from req.body in Express
+  const propertyData = {
+    address: "123 Main Street",
+    zip: "12345",
+    city: "New York",
+    realtorFee: hre.ethers.utils.parseEther("0.05"),  // 0.05 ETH
+    price: hre.ethers.utils.parseEther("425")         // 425 ETH
+  };
+
+  const accounts = {
+    realtorAddress: realtor.address,
+    sellerAddress: seller.address,
+    buyerAddress: buyer.address
+  };
+
+  // Create HomeTransaction using the function
+  const result = await createHomeTransaction(factory, propertyData, accounts);
+
+  console.log("✓ HomeTransaction created successfully!");
+  console.log("");
+
+  // Save deployment info
+  console.log("=== Deployment Summary ===");
+  console.log("Network:", hre.network.name);
+  console.log("Factory Address:", factory.address);
+  console.log("HomeTransaction Address:", result.contractAddress);
+  console.log("Transaction Hash:", result.transactionHash);
+  console.log("");
+  console.log("Accounts:");
+  console.log("  Realtor:", realtor.address);
+  console.log("  Seller:", seller.address);
+  console.log("  Buyer:", buyer.address);
+  console.log("");
+  
+  console.log("Save these addresses to use in the frontend");
 }
 
 main()
