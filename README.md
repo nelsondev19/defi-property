@@ -80,3 +80,5 @@ The app will be available at `http://locahost:3000`.
 - Navbar updated to use Wallet Address Component
 - Removed unused imports in all React app
 - Added JSDoc comments to new Hooks and components
+- Button to change network
+- Example to deploy smart contract
