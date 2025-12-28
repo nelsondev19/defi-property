@@ -24,7 +24,7 @@ function WalletAddress({ Wallet }) {
     setTimeout(() => setTextCopied(false), 1500);
   };
   return (
-    <div className="px-3 py-2 text-sm font-medium text-green-600 border border-green-600 rounded-lg gap-2 flex items-center">
+    <div title={Wallet} className="px-3 py-2 text-sm font-medium text-green-600 border border-green-600 rounded-lg gap-2 flex items-center">
       {`${Wallet.substring(0, 6)}...${Wallet.substring(Wallet.length - 4)}`}
       <button onClick={clipboard}>
         {TextCopied ? (

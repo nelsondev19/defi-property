@@ -1,5 +1,5 @@
 // HOOKS
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAccountChanges } from "../../hooks/useAccountChanges";
 
 // COMPONENTS
@@ -19,7 +19,7 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const [Wallet, setWallet] = useState(null);
-  const [Loading, setLoading] = useState(false);
+  const [Loading, setLoading] = useState(true);
   const [Error, setError] = useState(null);
 
   const repositoryRef = useRef(new WalletRepository());
@@ -37,6 +37,22 @@ function Navbar() {
       setLoading(false);
     }
   };
+
+  // LOAD CONNECTED WALLET ON MOUNT
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const { address } = await serviceRef.current.loadConnectedWalletData();
+        setWallet(address);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   useAccountChanges({ setWallet, setError });
 

@@ -12,6 +12,13 @@ class WalletService {
       address: wallet,
     };
   }
+  async loadConnectedWalletData() {
+    const wallet = await this.repository.getConnectedWallet();
+
+    return {
+      address: wallet,
+    };
+  }
 }
 
 export { WalletService };
