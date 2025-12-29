@@ -19,6 +19,11 @@ class WalletService {
       address: wallet,
     };
   }
+
+  async switchNetwork(chainId) {
+    const switched = await this.repository.switchNetwork(chainId);
+    return { switched };
+  }
 }
 
 export { WalletService };

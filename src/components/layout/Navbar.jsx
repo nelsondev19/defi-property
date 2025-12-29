@@ -139,7 +139,7 @@ function Navbar() {
                       <WalletAddress Wallet={Wallet} />
                       <BtnChangeNetwork
                         onClick={async () => {
-                          await repositoryRef.current.switchNetwork("0x539"); // Hex for 1337
+                          await serviceRef.current.switchNetwork("0x539"); // Hex for 1337
                         }}
                       />
                     </>
